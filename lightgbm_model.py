@@ -23,7 +23,7 @@ def read_testset(file_path):
 
     return inputs
 
-def train(trainset, testset=None):
+def train(trainset, testset, testset_output_path):
     inputs, labels = trainset
     print(f"The size of inputs: {inputs.shape}")
     print(f"The size of labels: {labels.shape}")
@@ -43,7 +43,7 @@ def train(trainset, testset=None):
     testset_probs = lgbmclassifier.predict_proba(testset)
 
     print(testset_probs.shape)
-    with open("./outputs/lightgbm.txt", "w", encoding="utf-8") as f:
+    with open(testset_output_path, "w", encoding="utf-8") as f:
         f.write("object, prob, class\n")
         max_index = testset_probs.shape[0]
         for index in range(max_index):
@@ -55,9 +55,10 @@ def train(trainset, testset=None):
 if __name__ == "__main__":
     trainset_path = "./dataset/雪崩数据库308.xlsx"
     testset_path = "./dataset/fishnet.txt"
+    testset_output_path = "./outputs/lightgbm.txt"
     trainset = read_trainset(trainset_path)
     testset = read_testset(testset_path)
-    model = train(trainset, testset)
+    model = train(trainset, testset, testset_output_path)
 
 
 
